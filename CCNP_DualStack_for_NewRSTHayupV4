@@ -742,6 +742,7 @@ end
 			neigh b:1:4:b::4 activate
 			network b55::1/128
 			network 2001:4860:4860::8888/128
+			network 8:8:8:8::8888/128
 			network b:3:4:b::/64
 			network b:2:4:b::/64
 			network b:1:4:b::/64
@@ -1171,7 +1172,7 @@ R1 pa rin:
 config t
 router bgp 1
   address-family ipv6 unicast
-   redistribute ospf 6 match internal external 1 external 2
+   redistribute ospf 6 match internal external 1 external 2 include-connected
 
 
 !!!puntanan yung kadulu-duluhan which is R4, dapat tagos ang ping b55::1
@@ -1818,7 +1819,7 @@ VRF info: (vrf in name/id, vrf out name/id)
 
 What if 208.8.8.4 is cut???, in R1:
 conf t
-	int e1/1
+	int e1/3
 	 shut
 	  do clear ip bgp * soft	! (or cibs) This is to send new NOK Packets (Only tie breaker is router id)
 	  	!wait while cibs
@@ -2427,7 +2428,7 @@ route-map LP1 permit 30
  match ip address 43
   set local-pref 433
 route-map LP1 Deny 45
- match ip address 43
+ match ip address 45
 route-map LP1 Permit 50
 !
 route-map LP1 Permit 40
